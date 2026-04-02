@@ -29,6 +29,23 @@ Some prompts to answer:
 
 You can include a simple diagram or bullet list if helpful.
 
+Each **Song** in the system uses the following features: `genre`, `mood`, 
+`energy`, `tempo_bpm`, `valence`, `danceability`, and `acousticness`.
+
+Each **UserProfile** stores the user's preferred genres (supporting a mix, 
+e.g. classical and pop), a target energy level, a target valence, a list of 
+liked songs, liked artists, and a listening history to avoid re-recommending 
+heard tracks.
+
+The **Recommender** scores each song by measuring how close its `energy` and 
+`valence` are to the user's preferences using the formula 
+`1 - |song_value - user_preference|`, then combines them with valence weighted 
+more heavily (60/40). A genre match adds a bonus, and a liked artist adds a 
+smaller affinity boost.
+
+Songs are **ranked** by their total score, filtered to remove already-heard 
+tracks, and the top N results are returned. Songs from a liked artist that 
+sound noticeably different are flagged as Discovery Picks.
 ---
 
 ## Getting Started
