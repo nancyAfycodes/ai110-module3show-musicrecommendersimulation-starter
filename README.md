@@ -199,7 +199,7 @@ contextual boosts that conflict with their long-term listening pattern.
 the user has skipped or disliked. All unheard songs are treated as equally
 viable candidates until explicitly added to `listened_history`.
 ---
-## Sample Output
+## Sample CLI Output 
 ![alt text](image.png)
 ![alt text](image-1.png)
 
