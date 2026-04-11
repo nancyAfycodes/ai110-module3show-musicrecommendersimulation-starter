@@ -113,9 +113,8 @@ class Recommender:
             "likes_acoustic": user.likes_acoustic,
         }
 
-        scored = []
-        for song in self.songs:
-            song_dict = {
+        def to_dict(song: Song) -> Dict:
+            return {
                 "id":           song.id,
                 "title":        song.title,
                 "artist":       song.artist,
@@ -127,10 +126,12 @@ class Recommender:
                 "danceability": song.danceability,
                 "acousticness": song.acousticness,
             }
-            total, _ = score_song(user_prefs, song_dict)
-            scored.append((song, total))
 
-        scored.sort(key=lambda x: x[1], reverse=True)
+        scored = sorted(
+            ((song, score_song(user_prefs, to_dict(song))[0]) for song in self.songs),
+            key=lambda x: x[1],
+            reverse=True
+        )
         return [song for song, _ in scored[:k]]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
@@ -195,16 +196,18 @@ def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tup
     Scores every song against user_prefs and returns the top k as:
         (song_dict, score, explanation)
     """
-    scored = []
-
-    for song in songs:
+    def build_entry(song: Dict) -> Tuple[Dict, float, str]:
         total, reasons = score_song(user_prefs, song)
         explanation = (
             "Recommended because: " + " | ".join(reasons)
             if reasons else
             "Recommended as a general match to your taste profile."
         )
-        scored.append((song, total, explanation))
+        return song, total, explanation
 
-    scored.sort(key=lambda x: x[1], reverse=True)
+    scored = sorted(
+        (build_entry(song) for song in songs),
+        key=lambda x: x[1],
+        reverse=True
+    )
     return scored[:k]
