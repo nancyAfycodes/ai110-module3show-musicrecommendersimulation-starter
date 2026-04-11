@@ -28,24 +28,16 @@ Some prompts to answer:
 - How do you choose which songs to recommend
 
 You can include a simple diagram or bullet list if helpful.
+- Music recommendation systems such as Spotify and Pandora use a hybrid recommendation system that combines collaborative and content-based filtering. Collaborative filtering is based on other users, who have listened to the same and/or similar songs, whilst content-based filtering is based on a particular song's attribute. In this project, I'll simulating a hybrid filtering system to build a music recommendation system, as listed below:
+- **Song** in the system uses the following features: `genre`, `mood`, `energy`, `tempo_bpm`, `valence`, `danceability`, and `acousticness`.
 
-Each **Song** in the system uses the following features: `genre`, `mood`, 
-`energy`, `tempo_bpm`, `valence`, `danceability`, and `acousticness`.
-
-Each **UserProfile** stores the user's preferred genres (supporting a mix, 
-e.g. classical and pop), a target energy level, a target valence, a list of 
-liked songs, liked artists, and a listening history to avoid re-recommending 
+- **UserProfile** stores the user's preferred genres (supporting a mix, e.g. classical and pop), a target energy level, a target valence, a list of liked songs, liked artists, and a listening history to avoid re-recommending 
 heard tracks.
 
-The **Recommender** scores each song by measuring how close its `energy` and 
-`valence` are to the user's preferences using the formula 
-`1 - |song_value - user_preference|`, then combines them with valence weighted 
-more heavily (60/40). A genre match adds a bonus, and a liked artist adds a 
+- **Recommender** scores each song by measuring how close its `energy` and `valence` are to the user's preferences using the formula `1 - |song_value - user_preference|`, and then combines them with valence weighted more heavily (60/40). A genre match adds a bonus, and a liked artist adds a 
 smaller affinity boost.
 
-Songs are **ranked** by their total score, filtered to remove already-heard 
-tracks, and the top N results are returned. Songs from a liked artist that 
-sound noticeably different are flagged as Discovery Picks.
+- Songs are **ranked** by their total score, filtered to remove already-heard songs, and the top N results are returned. Songs from a liked artist that sound noticeably different are flagged as Discovery Picks.
 ---
 
 ## Getting Started
