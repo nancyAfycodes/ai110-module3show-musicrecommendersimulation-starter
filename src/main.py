@@ -12,7 +12,6 @@ Run from the project root with:
     python -m src.main
 """
 
-
 from recommender import load_songs, recommend_songs
 
 
@@ -61,7 +60,6 @@ PROFILES = [
             "likes_acoustic": False,
         }
     },
-    # --- Edge Case Profiles ---
     {
         "name": "Edge Case: High Energy + Melancholic Mood",
         "prefs": {
@@ -101,6 +99,7 @@ PROFILES = [
 # --- Output helpers ---
 
 def print_header(title: str) -> None:
+    """Prints a formatted section header."""
     width = 60
     print("\n" + "=" * width)
     print(f"  {title}")
@@ -108,12 +107,14 @@ def print_header(title: str) -> None:
 
 
 def print_profile(name: str, prefs: dict) -> None:
+    """Prints a user profile summary."""
     print_header(f"User Profile: {name}")
     for key, val in prefs.items():
         print(f"  {key:<16}: {val}")
 
 
 def print_recommendation(rank: int, song: dict, score: float, explanation: str) -> None:
+    """Prints a single ranked recommendation with its score and reasons."""
     print(f"\n  #{rank}  {song['title']}  —  {song['artist']}")
     print(f"       Genre: {song['genre']}  |  Mood: {song['mood']}  |  Energy: {song['energy']}")
     print(f"       Score: {score:.3f}")
@@ -124,13 +125,14 @@ def print_recommendation(rank: int, song: dict, score: float, explanation: str) 
 
 
 def run_profile(songs: list, profile: dict, experiment: dict) -> None:
+    """Runs the recommender for a single profile under a given experiment mode."""
     name  = profile["name"]
     prefs = profile["prefs"]
     mode  = experiment["mode"]
     label = experiment["label"]
 
     print_profile(f"{name}  [{label}]", prefs)
-    recommendations = recommend_songs(prefs, songs, k=5, experiment=mode)
+    recommendations = recommend_songs(prefs, songs, 5, mode)
 
     print_header(f"Top 5  |  {name}  |  {label}")
     for rank, (song, score, explanation) in enumerate(recommendations, start=1):
@@ -141,6 +143,7 @@ def run_profile(songs: list, profile: dict, experiment: dict) -> None:
 # --- Entry point ---
 
 def main() -> None:
+    """Loads songs and runs all profiles under each experiment mode."""
     songs = load_songs("data/songs.csv")
     print(f"\n  Loaded {len(songs)} songs from catalog.")
 
