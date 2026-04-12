@@ -144,7 +144,7 @@ def run_profile(songs: list, profile: dict, experiment: dict) -> None:
 
 def main() -> None:
     """Loads songs and runs all profiles under each experiment mode."""
-    songs = load_songs("data/songs.csv")
+    songs = load_songs("../data/songs.csv")
     print(f"\n  Loaded {len(songs)} songs from catalog.")
 
     for experiment in EXPERIMENTS:
@@ -154,4 +154,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
