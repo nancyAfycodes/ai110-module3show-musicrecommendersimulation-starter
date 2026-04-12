@@ -33,7 +33,11 @@ class UserProfile:
     likes_acoustic: bool
 
 
-def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
+def score_song(
+    user_prefs: Dict,
+    song: Dict,
+    experiment: Optional[str] = None
+) -> Tuple[float, List[str]]:
     """
     Scores a single song against a user preference dictionary.
 
@@ -45,25 +49,36 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
       +0.2  — danceability closeness
       +0.5  — acousticness preference match
 
+    Args:
+        user_prefs: user preference dictionary
+        song:       song dictionary to score
+        experiment: optional experiment mode —
+                    "weight_shift"   doubles energy weight, halves genre weight
+                    "no_mood"        disables mood matching entirely
+
     Returns:
         (total_score, reasons)  where reasons is a list of human-readable strings
     """
     score = 0.0
     reasons = []
 
-    # --- Genre match (+2.0) ---
-    if song["genre"] == user_prefs.get("genre"):
-        score += 2.0
-        reasons.append(f"genre match (+2.0): song is {song['genre']}")
+    # --- Experiment: weight_shift — genre halved, energy doubled ---
+    genre_weight  = 1.0 if experiment == "weight_shift" else 2.0
+    energy_weight = 0.8 if experiment == "weight_shift" else 0.4
 
-    # --- Mood match (+1.0) ---
-    if song["mood"] == user_prefs.get("mood"):
+    # --- Genre match ---
+    if song["genre"] == user_prefs.get("genre"):
+        score += genre_weight
+        reasons.append(f"genre match (+{genre_weight}): song is {song['genre']}")
+
+    # --- Mood match (skipped in no_mood experiment) ---
+    if experiment != "no_mood" and song["mood"] == user_prefs.get("mood"):
         score += 1.0
         reasons.append(f"mood match (+1.0): song is {song['mood']}")
 
-    # --- Energy closeness (up to +0.4) ---
+    # --- Energy closeness ---
     target_energy = user_prefs.get("energy", 0.5)
-    energy_contrib = round(0.4 * (1.0 - abs(song["energy"] - target_energy)), 3)
+    energy_contrib = round(energy_weight * (1.0 - abs(song["energy"] - target_energy)), 3)
     score += energy_contrib
     reasons.append(f"energy score (+{energy_contrib}): song={song['energy']}, target={target_energy}")
 
