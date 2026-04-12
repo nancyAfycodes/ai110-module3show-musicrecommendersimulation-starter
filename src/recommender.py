@@ -36,7 +36,7 @@ class UserProfile:
 def score_song(
     user_prefs: Dict,
     song: Dict,
-    experiment: Optional[str] = None
+    experiment: Optional[str] = None,
 ) -> Tuple[float, List[str]]:
     """
     Scores a single song against a user preference dictionary.
@@ -57,12 +57,11 @@ def score_song(
                     "no_mood"        disables mood matching entirely
 
     Returns:
-        (total_score, reasons)  where reasons is a list of human-readable strings
+        (total_score, reasons) where reasons is a list of human-readable strings
     """
     score = 0.0
     reasons = []
 
-    # --- Experiment: weight_shift — genre halved, energy doubled ---
     genre_weight  = 1.0 if experiment == "weight_shift" else 2.0
     energy_weight = 0.8 if experiment == "weight_shift" else 0.4
 
@@ -108,72 +107,36 @@ def score_song(
     return round(score, 3), reasons
 
 
-class Recommender:
+def recommend_songs(
+    user_prefs: Dict,
+    songs: List[Dict],
+    k: int = 5,
+    experiment: Optional[str] = None,
+) -> List[Tuple[Dict, float, str]]:
     """
-    OOP implementation of the recommendation logic.
-    Required by tests/test_recommender.py
+    Functional implementation of the recommendation logic.
+    Required by src/main.py
+
+    Args:
+        user_prefs: user preference dictionary
+        songs:      full song catalog as list of dicts
+        k:          number of top results to return
+        experiment: optional experiment mode passed through to score_song
+
+    Returns top k as: (song_dict, score, explanation)
     """
-    def __init__(self, songs: List[Song]):
-        self.songs = songs
-
-    def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
-        """
-        Scores every song against the user profile and returns the top k.
-        """
-        # Convert UserProfile to dict so we can reuse score_song()
-        user_prefs = {
-            "genre":        user.favorite_genre,
-            "mood":         user.favorite_mood,
-            "energy":       user.target_energy,
-            "likes_acoustic": user.likes_acoustic,
-        }
-
-        def to_dict(song: Song) -> Dict:
-            return {
-                "id":           song.id,
-                "title":        song.title,
-                "artist":       song.artist,
-                "genre":        song.genre,
-                "mood":         song.mood,
-                "energy":       song.energy,
-                "tempo_bpm":    song.tempo_bpm,
-                "valence":      song.valence,
-                "danceability": song.danceability,
-                "acousticness": song.acousticness,
-            }
-
-        scored = sorted(
-            ((song, score_song(user_prefs, to_dict(song))[0]) for song in self.songs),
-            key=lambda x: x[1],
-            reverse=True
+    scored = []
+    for song in songs:
+        total, reasons = score_song(user_prefs, song, experiment)
+        explanation = (
+            "Recommended because: " + " | ".join(reasons)
+            if reasons else
+            "Recommended as a general match to your taste profile."
         )
-        return [song for song, _ in scored[:k]]
+        scored.append((song, total, explanation))
 
-    def explain_recommendation(self, user: UserProfile, song: Song) -> str:
-        """
-        Returns a human-readable explanation for why a song was recommended.
-        """
-        user_prefs = {
-            "genre":          user.favorite_genre,
-            "mood":           user.favorite_mood,
-            "energy":         user.target_energy,
-            "likes_acoustic": user.likes_acoustic,
-        }
-        song_dict = {
-            "id":           song.id,
-            "title":        song.title,
-            "artist":       song.artist,
-            "genre":        song.genre,
-            "mood":         song.mood,
-            "energy":       song.energy,
-            "tempo_bpm":    song.tempo_bpm,
-            "valence":      song.valence,
-            "danceability": song.danceability,
-            "acousticness": song.acousticness,
-        }
-        total, reasons = score_song(user_prefs, song_dict)
-        lines = [f"Score: {total}"] + [f"  - {r}" for r in reasons]
-        return "\n".join(lines)
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return scored[:k]
 
 
 def load_songs(csv_path: str) -> List[Dict]:
@@ -203,26 +166,63 @@ def load_songs(csv_path: str) -> List[Dict]:
     return songs
 
 
-def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
+class Recommender:
     """
-    Functional implementation of the recommendation logic.
-    Required by src/main.py
-
-    Scores every song against user_prefs and returns the top k as:
-        (song_dict, score, explanation)
+    OOP implementation of the recommendation logic.
+    Required by tests/test_recommender.py
     """
-    def build_entry(song: Dict) -> Tuple[Dict, float, str]:
-        total, reasons = score_song(user_prefs, song)
-        explanation = (
-            "Recommended because: " + " | ".join(reasons)
-            if reasons else
-            "Recommended as a general match to your taste profile."
-        )
-        return song, total, explanation
+    def __init__(self, songs: List[Song]):
+        self.songs = songs
 
-    scored = sorted(
-        (build_entry(song) for song in songs),
-        key=lambda x: x[1],
-        reverse=True
-    )
-    return scored[:k]
+    def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
+        """Scores every song against the user profile and returns the top k."""
+        user_prefs = {
+            "genre":          user.favorite_genre,
+            "mood":           user.favorite_mood,
+            "energy":         user.target_energy,
+            "likes_acoustic": user.likes_acoustic,
+        }
+
+        scored = []
+        for song in self.songs:
+            song_dict = {
+                "id":           song.id,
+                "title":        song.title,
+                "artist":       song.artist,
+                "genre":        song.genre,
+                "mood":         song.mood,
+                "energy":       song.energy,
+                "tempo_bpm":    song.tempo_bpm,
+                "valence":      song.valence,
+                "danceability": song.danceability,
+                "acousticness": song.acousticness,
+            }
+            total, _ = score_song(user_prefs, song_dict)
+            scored.append((song, total))
+
+        scored.sort(key=lambda x: x[1], reverse=True)
+        return [song for song, _ in scored[:k]]
+
+    def explain_recommendation(self, user: UserProfile, song: Song) -> str:
+        """Returns a human-readable explanation for why a song was recommended."""
+        user_prefs = {
+            "genre":          user.favorite_genre,
+            "mood":           user.favorite_mood,
+            "energy":         user.target_energy,
+            "likes_acoustic": user.likes_acoustic,
+        }
+        song_dict = {
+            "id":           song.id,
+            "title":        song.title,
+            "artist":       song.artist,
+            "genre":        song.genre,
+            "mood":         song.mood,
+            "energy":       song.energy,
+            "tempo_bpm":    song.tempo_bpm,
+            "valence":      song.valence,
+            "danceability": song.danceability,
+            "acousticness": song.acousticness,
+        }
+        total, reasons = score_song(user_prefs, song_dict)
+        lines = [f"Score: {total}"] + [f"  - {r}" for r in reasons]
+        return "\n".join(lines)
