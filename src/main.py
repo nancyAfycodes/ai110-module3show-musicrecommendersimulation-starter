@@ -12,7 +12,17 @@ Run from the project root with:
     python -m src.main
 """
 
+
 from recommender import load_songs, recommend_songs
+
+
+# --- Experiment modes ---
+
+EXPERIMENTS = [
+    {"mode": None,           "label": "Baseline"},
+    {"mode": "weight_shift", "label": "Experiment A: Weight Shift (energy x2, genre halved)"},
+    {"mode": "no_mood",      "label": "Experiment B: No Mood Matching"},
+]
 
 
 # --- User Profiles ---
@@ -71,14 +81,14 @@ PROFILES = [
             "energy":         0.95,
             "valence":        0.55,
             "danceability":   0.85,
-            "likes_acoustic": True,  # conflicts with electronic genre
+            "likes_acoustic": True,
         }
     },
     {
         "name": "Edge Case: No Genre or Mood Match in Catalog",
         "prefs": {
-            "genre":          "metal",   # not in catalog
-            "mood":           "angry",   # not in catalog
+            "genre":          "metal",
+            "mood":           "angry",
             "energy":         0.99,
             "valence":        0.20,
             "danceability":   0.50,
@@ -87,6 +97,8 @@ PROFILES = [
     },
 ]
 
+
+# --- Output helpers ---
 
 def print_header(title: str) -> None:
     width = 60
@@ -111,26 +123,32 @@ def print_recommendation(rank: int, song: dict, score: float, explanation: str) 
     print("  " + "-" * 56)
 
 
-def run_profile(songs: list, profile: dict) -> None:
+def run_profile(songs: list, profile: dict, experiment: dict) -> None:
     name  = profile["name"]
     prefs = profile["prefs"]
+    mode  = experiment["mode"]
+    label = experiment["label"]
 
-    print_profile(name, prefs)
-    recommendations = recommend_songs(prefs, songs, k=5)
+    print_profile(f"{name}  [{label}]", prefs)
+    recommendations = recommend_songs(prefs, songs, k=5, experiment=mode)
 
-    print_header(f"Top 5 Recommendations for: {name}")
+    print_header(f"Top 5  |  {name}  |  {label}")
     for rank, (song, score, explanation) in enumerate(recommendations, start=1):
         print_recommendation(rank, song, score, explanation)
     print("\n  End of recommendations.\n")
 
 
+# --- Entry point ---
+
 def main() -> None:
     songs = load_songs("data/songs.csv")
     print(f"\n  Loaded {len(songs)} songs from catalog.")
 
-    for profile in PROFILES:
-        run_profile(songs, profile)
+    for experiment in EXPERIMENTS:
+        for profile in PROFILES[:3]:
+            run_profile(songs, profile, experiment)
 
 
 if __name__ == "__main__":
     main()
+
