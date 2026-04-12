@@ -198,6 +198,11 @@ contextual boosts that conflict with their long-term listening pattern.
 **No negative feedback**: the system currently has no way to penalize songs
 the user has skipped or disliked. All unheard songs are treated as equally
 viable candidates until explicitly added to `listened_history`.
+
+**Score collapse on unknown preferences**: when a user's genre and mood have
+no match in the catalog, total scores drop to the 1.0–1.5 range, making all
+results feel equally uncertain. The system has no way to signal low confidence
+or flag that recommendations are essentially blind guesses in this scenario.
 ---
 ## Sample CLI Output 
 ![alt text](image.png)
@@ -210,7 +215,30 @@ viable candidates until explicitly added to `listened_history`.
 ![High-Energy Pop](hep-1.png)
 ![High-Energy Pop](hep-2.png)
 
+### Chill Lofi
+![Chill Lofi](clfi.png)
+![Chill Lofi](clfi-1.png)
+![Chill Lofi](clfi-2.png)
 
+### Deep Intense Rock
+![Deep Intense Rock](dir.png)
+![Deep Intense Rock](dir-1.png)
+![Deep Intense Rock](dir-2.png)
+
+### Edge Case: High Energy + Melancholic Mood
+![Edge Case 1](hemm.png)
+![Edge Case 1](hemm1.png)
+![Edge Case 1](hemm-2.png)
+
+### Edge Case:  Conflicting Acoustic + Electronic
+![Edge Case 2](caeg.png)
+![Edge Case 2](caeg-1.png)
+![Edge Case 2](caeg-2.png)
+
+### Edge Case: No Genre or Mood Match
+![Edge Case 3](nomatch.png)
+![Edge Case 3](nomatch-1.png)
+![Edge Case 3](nomatch-2.png)
 
 
 
