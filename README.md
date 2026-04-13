@@ -285,7 +285,7 @@ or flag that recommendations are essentially blind guesses in this scenario.
 ![Chill Lofi](expB-clfi2.png)
 
 ### Deep Intense Rock
-![Deep Intense Rock](expB-dir.png)
+![Deep Intense Rock](docs/expB-dir.png)
 ![Deep Intense Rock](expB-dir1.png)
 ![Deep Intense Rock](expB-dir2.png)
 
