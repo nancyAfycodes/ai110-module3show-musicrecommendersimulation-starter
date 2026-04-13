@@ -12,6 +12,7 @@ Run from the project root with:
     python -m src.main
 """
 
+
 import os
 from recommender import load_songs, recommend_songs
 
@@ -192,8 +193,7 @@ def run_profile(songs: list, profile: dict, experiment: dict) -> None:
     recommendations = recommend_songs(prefs, songs, 5, mode, diversity)
 
     print_header(f"Top 5  |  {name}  |  {label}")
-    for rank, (song, score, explanation) in enumerate(recommendations, start=1):
-        print_recommendation(rank, song, score, explanation)
+    print_summary_table(recommendations)
     print("\n  End of recommendations.\n")
 
 
