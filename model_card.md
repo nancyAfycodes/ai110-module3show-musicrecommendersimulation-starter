@@ -1,11 +1,7 @@
 # 🎧 Model Card: Music Recommender Simulation
 
 ## 1. Model Name  
-
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
-
-**MusicMatch Recommender**
+**MusicMatch 1.0 Recommender**
 
 ---
 
