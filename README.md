@@ -241,10 +241,53 @@ or flag that recommendations are essentially blind guesses in this scenario.
 ![Edge Case 3](nomatch-2.png)
 
 
+## Data Experiment Baseline Result
+### High-Energy Pop
+![High-Energy Pop](baseline_hep.png)
+![High-Energy Pop](baseline-hep1.png)
+![High-Energy Pop](baseline-hep2.png)
 
+### Chill Lofi
+![Chill Lofi](baseline_cfli.png)
+![Chill Lofi](baseline-clfi1.png)
+![Chill Lofi](baseline-clfi2.png)
 
+### Deep Intense Rock
+![Deep Intense Rock](baseline_dir.png)
+![Deep Intense Rock](baseline-dir1.png)
+![Deep Intense Rock](baseline-dir2.png)
 
+## Experiment A: Weight Shift
+### High-Energy Pop
+![High-Energy Pop](expA_hep.png)
+![High-Energy Pop](expA-hep1.png)
+![High-Energy Pop](expA-hep2.png)
 
+### Chill Lofi
+![Chill Lofi](expA_clfi.png)
+![Chill Lofi](expA-clfi1.png)
+![Chill Lofi](expA-clfi1.png)
+
+### Deep Intense Rock
+![Deep Intense Rock](expA_dir.png)
+![Deep Intense Rock](expA-dir1.png)
+![Deep Intense Rock](expA-dir2.png)
+
+## Experiment B: No Mood Matching
+### High-Energy Pop
+![High-Energy Pop](expB-hep.png)
+![High-Energy Pop](expA-hep1.png)
+![High-Energy Pop](expB-hep2.png)
+
+### Chill Lofi
+![Chill Lofi](expB-clfi.png)
+![Chill Lofi](expB-clfi1.png)
+![Chill Lofi](expB-clfi2.png)
+
+### Deep Intense Rock
+![Deep Intense Rock](expB-dir.png)
+![Deep Intense Rock](expB-dir1.png)
+![Deep Intense Rock](expB-dir2.png)
 
 ## Getting Started
 
