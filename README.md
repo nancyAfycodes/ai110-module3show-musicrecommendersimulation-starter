@@ -194,27 +194,27 @@ or flag that recommendations are essentially blind guesses in this scenario.
 ### High-Energy Pop
 | Baseline | Experiment A | Experiment B |
 |---|---|---|
-| ![](src\docs\baseline_hep.png) | ![](src\docs\expA-hep1.png) | ![](src\docs\expB-hep2.png) |
+| ![](src/docs/baseline_hep.png) | ![](src/docs/expA-hep1.png) | ![](src/docs/expB-hep2.png) |
 
 ### Chill Lofi
 | Baseline | Experiment A | Experiment B |
 |---|---|---|
-| ![](docs/clfi.png) | ![](docs/expA_clfi.png) | ![](docs/expB-clfi.png) |
+| ![](src/docs/baseline_clfi.png) | ![](src/docs/expA-clfi1.png) | ![](src/docs/expB-clfi2.png) |
 
 ### Deep Intense Rock
 | Baseline | Experiment A | Experiment B |
 |---|---|---|
-| ![](docs/dir.png) | ![](docs/expA_dir.png) | ![](docs/expB-dir.png) |
+| ![](src/docs/baseline-dir1.png) | ![](src/docs/expA_dir.png) | ![](src/docs/expB-dir.png) |
 
 ### Edge Case: High Energy + Melancholic Mood
 | Result |
 |---|
-| ![](docs/hemm.png) |
+| ![](src/docs/hemm.png) |
 
 ### Edge Case: Conflicting Acoustic + Electronic
 | Result |
 |---|
-| ![](docs/caeg.png) |
+| ![](src/docs/caeg.png) |
 
 ## Getting Started
 
