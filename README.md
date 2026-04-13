@@ -488,9 +488,8 @@ Improve the readability of your terminal output by providing a formatted table o
 Ask Copilot to suggest a way to use a library like tabulate or simple ASCII formatting to display your top recommendations. Ensure your prompt specifies that the table must include the "reasons" for each score.
 
 ## Results 
-![Results](challenge-res.png)
-![Results](challenge-res1.png)
-![Results](challenge-res2.png)
+![Results](docs/challenge_res.png)
+
 ![Results](image-3.png)
 ![Results](image-4.png)
 ![Results](image-5.png)
