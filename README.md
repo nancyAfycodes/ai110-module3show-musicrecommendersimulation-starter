@@ -321,7 +321,8 @@ Implement a "Diversity Penalty" that prevents the recommender from suggesting to
 Challenge 4: Visual Summary Table
 Improve the readability of your terminal output by providing a formatted table or summary.
 
-## Sample Results 
+## Sample Results
+*** refer to model_card.md for image display 
 ![alt text](image.png)
 ![alt text](image-1.png)
 ![alt text](image-2.png)
