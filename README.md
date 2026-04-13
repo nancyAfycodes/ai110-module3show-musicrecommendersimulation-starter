@@ -475,3 +475,43 @@ A few sentences about what you learned:
 - Where do you think human judgment still matters, even if the model seems "smart"
 
 - One of the most important lesson learned from this project is that recommender systems, such as Spotify, YouTube, and Pandora, are very complicated. Such platforms analyze lots of datapoints to be able to recommend potential songs/ videos that may be of interest as well as suggest songs/videos the user maybe interested in. In addition, I think the human factor is still important to allow the recommender system to function properly. If a users seems to be interested in a particular kind of song and/or topic doesn't mean that the user(human) can't listen to or watch videos that the user may not have previously considered. I think recommender systems in general still needs 'human element' to function effectively.
+
+# Challenges 3 and 4  Prompts
+Challenge 3: Diversity and Fairness Logic
+Implement a "Diversity Penalty" that prevents the recommender from suggesting too many songs from the same artist or genre in the top results.
+Formulate a prompt for Inline Chat that describes a rule to penalize a song's score if its artist is already present in the top recommendations list.
+
+# Challenge 4
+Challenge 4: Visual Summary Table
+Improve the readability of your terminal output by providing a formatted table or summary.
+Ask Copilot to suggest a way to use a library like tabulate or simple ASCII formatting to display your top recommendations. Ensure your prompt specifies that the table must include the "reasons" for each score.
+
+## Results 
+![Results](challenge-res.png)
+![Results](challenge-res1.png)
+![Results](challenge-res2.png)
+![Results](image-3.png)
+![Results](image-4.png)
+![Results](image-5.png)
+![Results](image-6.png)
+![Results](image-7.png)
+![Results](image-8.png)
+![Results](image-9.png)
+![Results](image-10.png)
+![Results](image-11.png)
+![Results](image-12.png)
+![Results](image-13.png)
+![Results](image-14.png)
+![Results](image-15.png)
+![Results](image-16.png)
+![Results](image-17.png)
+![Results](image-18.png)
+![Results](image-19.png)
+![Results](image-20.png)
+![Results](image-21.png)
+![Results](image-22.png)
+![Results](image-23.png)
+![Results](image-24.png)
+![Results](image-25.png)
+![Results](image-26.png)
+![Results](image-27.png)
