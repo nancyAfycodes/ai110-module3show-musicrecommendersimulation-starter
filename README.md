@@ -207,7 +207,7 @@ or flag that recommendations are essentially blind guesses in this scenario.
 ---
 ## Sample CLI Output 
 ![alt text](image.png)
-![alt text](image-1.png)
+![alt text](src\docs\CLI_output.png)
 
 ## Profile Test Screenshot
 
