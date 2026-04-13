@@ -185,7 +185,7 @@ or flag that recommendations are essentially blind guesses in this scenario.
 ---
 ## Sample CLI Output
 
-![](src\docs\CLI_output.png)
+![](src/docs/CLI_output.png)
 
 ---
 
