@@ -12,6 +12,13 @@ Run from the project root with:
     python -m src.main
 """
 
+"""
+Command line runner for the Music Recommender Simulation.
+
+Run from the project root with:
+    python -m src.main
+"""
+
 from recommender import load_songs, recommend_songs
 
 
@@ -112,6 +119,57 @@ def print_profile(name: str, prefs: dict) -> None:
     print_header(f"User Profile: {name}")
     for key, val in prefs.items():
         print(f"  {key:<16}: {val}")
+
+
+def print_summary_table(recommendations: list) -> None:
+    """Prints a formatted ASCII summary table of top recommendations."""
+    col_rank   = 4
+    col_title  = 22
+    col_artist = 18
+    col_genre  = 12
+    col_mood   = 12
+    col_score  = 7
+    total_width = col_rank + col_title + col_artist + col_genre + col_mood + col_score + 13
+
+    divider = "+" + "-" * (col_rank + 2) + "+" + "-" * (col_title + 2) + "+" \
+            + "-" * (col_artist + 2) + "+" + "-" * (col_genre + 2) + "+" \
+            + "-" * (col_mood + 2) + "+" + "-" * (col_score + 2) + "+"
+
+    header = (
+        f"| {'#':<{col_rank}} "
+        f"| {'Title':<{col_title}} "
+        f"| {'Artist':<{col_artist}} "
+        f"| {'Genre':<{col_genre}} "
+        f"| {'Mood':<{col_mood}} "
+        f"| {'Score':>{col_score}} |"
+    )
+
+    print("\n" + divider)
+    print(header)
+    print(divider)
+
+    for rank, (song, score, explanation) in enumerate(recommendations, start=1):
+        title  = song["title"][:col_title]
+        artist = song["artist"][:col_artist]
+        genre  = song["genre"][:col_genre]
+        mood   = song["mood"][:col_mood]
+
+        print(
+            f"| {rank:<{col_rank}} "
+            f"| {title:<{col_title}} "
+            f"| {artist:<{col_artist}} "
+            f"| {genre:<{col_genre}} "
+            f"| {mood:<{col_mood}} "
+            f"| {score:>{col_score}.3f} |"
+        )
+
+        # Print reasons below each row
+        reasons = explanation.replace("Recommended because: ", "").split(" | ")
+        for reason in reasons:
+            reason_text = reason[:total_width - 6]
+            print(f"|  -> {reason_text:<{total_width - 6}} |")
+
+        print(divider)
 
 
 def print_recommendation(rank: int, song: dict, score: float, explanation: str) -> None:
