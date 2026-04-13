@@ -1,7 +1,7 @@
 # 🎵 Music Recommender Simulation
 
 ## Project Summary
-- This music recommender system allows a user to pick a song based on preference and have suggestions made based on the music chosen. The first song the user selects will be used as a baseline to allow the recommender system suggest similar songs that are of the same genre. The system works in a similar fashion to real-world applications such as Spotify and YouTube. Spotify and YouTube suggest songs/videos based on the users previous choices and it is able to suggest new songs/videos, if it is similar to ones already listened to and/or viewed. Since the sample songs used in the project are few, 20 in number, the result obtained seems to favor high-energy pop music. 
+- This music recommender system allows a user to pick a song based on preference and have suggestions made based on the music chosen. The first song the user selects will be used as a baseline to allow the recommender system suggest similar songs that are of the same genre. The system works in a similar fashion to real-world applications such as Spotify and YouTube. Spotify and YouTube suggest songs/videos base on the users previous choices and it is able to suggest new songs/videos, if it is similar to ones already listened to and/or viewed. Since the sample songs used in the project are few, 20 in number, the result obtained seems to favor high-energy pop music. 
 
 ---
 
