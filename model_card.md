@@ -122,115 +122,168 @@ Prompts:
 
 - One of the most important lesson learned from this project is that recommender systems, such as Spotify, YouTube, and Pandora, are very complicated. Such platforms analyze lots of datapoints to be able to recommend potential songs/ videos that may be of interest as well as suggest songs/videos the user maybe interested in. In addition, I think the human factor is still important to allow the recommender system to function properly. If a users seems to be interested in a particular kind of song and/or topic doesn't mean that the user(human) can't listen to or watch videos that the user may not have previously considered. I think recommender systems in general still needs 'human element' to function effectively.
 
-* The answer below is AI-generated. It provides a much detailed assessment of the over project
+* The answer below is AI-generated. It provides a much detailed assessment of the project
 # Model Card — Music Recommender System
 
-## Model Overview
+# Model Card — MusicMatch 1.0
 
-A content-based music recommender that scores songs against a user preference
-profile using weighted audio features (energy, valence, danceability,
-acousticness) and categorical matches (genre, mood). Built as a CLI simulation
-using a 20-song catalog loaded from `data/songs.csv`.
+## 1. Model Name
+**MusicMatch 1.0** — a content-based music recommender simulation.
 
 ---
 
-## Limitations and Bias
-
-### 1. Genre Over-Prioritization (Filter Bubble)
-The genre match carries the single highest weight in the scoring formula
-(+2.0 points), which is more than double any other individual signal. This
-creates a strong filter bubble — a user who lists "pop" as their preferred
-genre will almost always receive pop songs in their top 5, even if a jazz or
-indie track is a near-perfect match on every audio feature. During Experiment
-A (genre weight halved to +1.0), non-genre songs surfaced immediately,
-confirming that genre dominance is a design choice with real consequences for
-diversity of recommendations.
-
-### 2. Cold-Start Weakness
-Users with no listening history, no liked artists, and only a single preferred
-genre receive recommendations based entirely on static preference values.
-There is no behavioral signal to refine or personalize results beyond the
-initial profile. This means two users with identical profiles will always
-receive identical recommendations regardless of how differently they actually
-listen, which reduces the system's ability to adapt to real individual taste.
-
-### 3. Score Collapse on Unknown Preferences
-When a user's preferred genre and mood have no match in the catalog (as
-demonstrated by the "metal / angry" edge case profile), the total scores for
-all songs collapse into a narrow band of roughly 1.0–1.5 points. The system
-has no mechanism to signal low confidence or warn the user that it is
-essentially guessing. A score of 1.2 looks similar in the output to a score
-of 4.6, even though one represents a near-perfect match and the other
-represents a complete absence of relevant signal.
-
-### 4. Mood Matching is Binary
-The mood score is awarded as a flat +1.0 for an exact string match or +0.0
-for anything else. This means "chill" and "relaxed" are treated as completely
-unrelated moods despite being semantically very close, while "intense" and
-"focused" are similarly penalized for not being identical strings. A
-similarity-aware mood scoring approach — such as grouping moods into clusters
-or using a numeric mood embedding — would produce more nuanced results.
-
-### 5. Small Catalog Amplifies All Biases
-With only 20 songs across 7 genres, some genres have only one or two
-representatives. This means any bias in the scoring weights is amplified —
-there are simply not enough songs in underrepresented genres to compete with
-pop or lofi tracks even when the audio features are a better match. A
-production system would require a catalog of thousands of songs before these
-scoring weights could be properly calibrated and evaluated.
+## 2. Goal / Task
+VibeFinder tries to suggest songs a user will enjoy based on how closely each
+song's audio features match the user's stated preferences. It does not learn
+from other users — it only looks at the music itself and compares it to what
+the user has told it they like.
 
 ---
 
-## Intended Use
-
-This system is intended as an educational simulation of content-based
-recommendation logic. It is not suitable for production use and should not
-be used as the sole basis for music discovery in a real application without
-significant expansion of the catalog, user profiling, and scoring calibration.
+## 3. Data Used
+- **Catalog size:** 20 songs stored in `data/songs.csv`
+- **Features per song:** genre, mood, energy (0–1), tempo (BPM), valence (0–1),
+  danceability (0–1), acousticness (0–1)
+- **Genres covered:** pop, lofi, rock, ambient, jazz, synthwave, indie pop,
+  classical, latin, electronic, world, gospel
+- **Limits:** The catalog is small and hand-curated. It does not represent the
+  full diversity of music. Some genres have only one or two songs, which limits
+  how well the system can differentiate within those genres.
 
 ---
 
-## Evaluation
+## 4. Algorithm Summary
+For every song in the catalog, the system computes a score by asking:
 
-### Profiles Tested
+- Does this song match the user's favorite genre? If yes, add 2 points.
+- Does this song match the user's preferred mood? If yes, add 1 point.
+- How close is this song's energy to what the user wants? Add up to 0.4 points
+  based on closeness — the closer, the more points.
+- How close is this song's emotional tone (valence) to what the user wants?
+  Add up to 0.6 points.
+- How close is the danceability? Add up to 0.2 points.
+- Does the song's acoustic quality match the user's preference? Add 0.5 points.
 
-**High-Energy Pop** — This profile produced the most intuitive results.
-Sunrise City ranked first in every experiment mode because it matched on
-genre, mood, and all audio features simultaneously. Gym Hero consistently
-appeared in the top 3 despite having an "intense" mood rather than "happy."
-This was the biggest surprise — Gym Hero scores so well on energy, valence,
-and danceability that it outranks many happy songs. In plain terms, the system
-sees Gym Hero as a happy-sounding song because its numbers say so, even if the
-word "intense" is attached to it. The lesson here is that mood labels are just
-words — the actual audio features tell a different story.
+Once every song has a score, the system sorts them from highest to lowest and
+returns the top 5. Songs the user has already heard are filtered out before
+the final list is shown.
 
-**Chill Lofi** — Results felt accurate and predictable. Library Rain and
-Midnight Coding consistently ranked at the top because they match on both
-genre and mood. Focus Flow occasionally outranked Library Rain in Experiment B
-(no mood matching) because its audio features are marginally closer to the
-target. This confirmed that mood matching is doing real work in the baseline —
-removing it visibly shuffled the rankings.
+---
 
-**Deep Intense Rock** — Storm Runner dominated every experiment, which makes
-sense since it is the only rock song with an "intense" mood. The more
-interesting observation was that Bass Drop Zero (electronic, intense) crept
-into the top 3 under Experiment A because its energy profile nearly matches
-the rock target. This shows the system can surface cross-genre songs when
-audio features align — which is either a feature or a bug depending on the
-user's expectations.
+## 5. Observed Behavior / Biases
 
-### What Surprised Us
-The biggest surprise across all profiles was how much genre weight shapes the
-top results. Removing it (Experiment A) immediately diversified the
-recommendations in ways that sometimes felt more musically accurate. A user
-who loves high-energy music might genuinely enjoy Bass Drop Zero even if they
-said their favorite genre is rock — and Experiment A surfaces that possibility
-while the baseline does not.
+**Genre filter bubble:** Because genre matching gives the highest reward (2.0
+points), the system strongly favors songs from the user's stated genre even
+when songs from other genres are a better audio match. This can trap users in
+a narrow slice of the catalog.
 
-## Experimental Findings
+**Binary mood matching:** Mood is either a full match (+1.0) or no match
+(+0.0). Closely related moods like "chill" and "relaxed" are treated as
+completely different, which causes some intuitively good songs to be ranked
+lower than expected.
 
-| Experiment | Change | Observed Effect |
-|---|---|---|
-| Baseline | Default weights | Genre + mood dominate; intuitive results for well-matched profiles |
-| Weight Shift | Energy x2, genre halved | Non-genre songs enter top 5; recommendations feel more audio-driven |
-| No Mood | Mood check disabled | Mood-mismatched songs rise; rankings feel less emotionally coherent |
+**Score collapse for unknown preferences:** When a user's genre and mood do
+not exist in the catalog, all songs score similarly low (around 1.0–1.5
+points). The system has no way to flag that it is guessing rather than
+recommending with confidence.
+
+**Small catalog amplification:** With only 20 songs, any imbalance in the
+data is amplified. Pop and lofi have more representatives than gospel or
+world music, so those genres naturally appear more often in recommendations.
+
+**No negative feedback:** The system cannot learn from skips or dislikes. It
+treats every unheard song as a candidate, even one the user would strongly
+dislike.
+
+---
+
+## 6. Evaluation Process
+Three standard user profiles were tested — High-Energy Pop, Chill Lofi, and
+Deep Intense Rock — along with three edge case profiles designed to expose
+weaknesses. Two experiments were run against all profiles:
+
+- **Experiment A (Weight Shift):** Genre weight halved, energy weight doubled.
+  Non-genre songs entered the top 5, showing that genre dominance was
+  suppressing musically valid recommendations.
+- **Experiment B (No Mood Matching):** Mood check disabled entirely. Rankings
+  shifted noticeably, confirming that mood matching is doing meaningful work
+  in the baseline scoring.
+
+The most revealing finding was that Gym Hero (tagged "intense") consistently
+appeared in Happy Pop recommendations because its audio numbers — energy,
+valence, danceability — all align with what a happy pop listener wants, even
+though the mood label says otherwise.
+
+---
+
+## 7. Intended Use and Non-Intended Use
+
+**Intended use:**
+- Educational simulation of content-based recommendation logic
+- Demonstrating how weighted scoring rules produce ranked outputs
+- Exploring how feature weights affect recommendation diversity
+
+**Not intended for:**
+- Production music discovery in a real application
+- Recommending music to real users without significant catalog expansion
+- Replacing collaborative filtering or behavioral data in a live system
+- Making any claims about a user's long-term musical taste from a single profile
+
+---
+
+## 8. Ideas for Improvement
+
+1. **Semantic mood grouping:** Instead of exact string matching, group moods
+   into clusters (e.g., chill/relaxed/peaceful = one cluster, intense/angry/
+   powerful = another). This would let the system reward near-matches rather
+   than penalizing them as complete misses.
+
+2. **Dynamic genre weighting:** Let the genre weight adjust based on how many
+   songs of that genre exist in the catalog. If only one rock song exists,
+   genre matching should count for less — otherwise the system has no real
+   choice to make within that genre.
+
+3. **Confidence scoring:** When total scores are low (e.g., below 1.5),
+   display a warning like "Low confidence — no strong matches found" so the
+   user knows the recommendations are not reliable. This directly addresses
+   the score collapse problem observed in edge case testing.
+
+---
+
+## Personal Reflection
+
+**Biggest learning moment:**
+The most surprising realization was how much a single weight value shapes the
+entire output. Changing the genre weight from 2.0 to 1.0 in Experiment A
+immediately diversified the recommendations in ways that felt more musically
+accurate. It made clear that designing a recommender is not just about writing
+correct code — it is about making deliberate decisions about what you value,
+and those decisions have real consequences for what users see.
+
+**How AI tools helped — and when to double-check:**
+Using Claude as a companion throughout this project helped move quickly from
+idea to working code. It was especially useful for translating the algorithm
+recipe from plain English into Python and for catching linter errors early.
+However, there were moments where generated code had subtle bugs — like the
+`experiment` parameter not threading through correctly — that required careful
+reading rather than blind trust. The lesson is that AI tools are excellent
+at scaffolding and speeding up implementation, but the developer still needs
+to understand what the code is doing to catch mistakes.
+
+**What surprised me about simple algorithms:**
+It was genuinely surprising how much the output "felt" like real
+recommendations even with a formula that is essentially just addition and
+subtraction. When Sunrise City ranked first for the Happy Pop profile, it felt
+correct — not because the system is smart, but because the features we chose
+(valence, energy, genre) happen to capture something real about how music
+feels. Simple math, applied to the right features, can produce results that
+feel intelligent even when they are not.
+
+**What I would try next:**
+The most natural next step would be adding collaborative filtering — looking
+at what other users with similar profiles have liked — to complement the
+content-based approach. A hybrid system that combines audio feature matching
+with behavioral data would likely produce much more surprising and useful
+discoveries than either approach alone. I would also want to expand the
+catalog significantly and experiment with a mood similarity matrix rather
+than binary string matching.
