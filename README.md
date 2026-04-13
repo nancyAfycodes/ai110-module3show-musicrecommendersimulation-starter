@@ -203,6 +203,7 @@ viable candidates until explicitly added to `listened_history`.
 no match in the catalog, total scores drop to the 1.0–1.5 range, making all
 results feel equally uncertain. The system has no way to signal low confidence
 or flag that recommendations are essentially blind guesses in this scenario.
+
 ---
 ## Sample CLI Output 
 ![alt text](image.png)
