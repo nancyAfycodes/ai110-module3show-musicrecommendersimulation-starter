@@ -375,7 +375,7 @@ Combines reflection and model card framing from the Module 3 guidance. :contentR
 Give your recommender a name, for example:
 
 > VibeFinder 1.0
-
+**Content-based Music Recommender**
 ---
 
 ## 2. Intended Use
@@ -386,7 +386,7 @@ Give your recommender a name, for example:
 Example:
 
 > This model suggests 3 to 5 songs from a small catalog based on a user's preferred genre, mood, and energy level. It is for classroom exploration only, not for real users.
-
+- The intended use for this recommender system is for educational purposes only. It is meant to mimic real recommender systems such as Spotify. The user can modify the songs used in the project to reflect his/her personal taste. 
 ---
 
 ## 3. How It Works (Short Explanation)
@@ -398,6 +398,8 @@ Describe your scoring logic in plain language.
 - How does it turn those into a number
 
 Try to avoid code in this section, treat it like an explanation to a non programmer.
+
+- Some of the features in this recommender system include genre, energy, danceability and mood, with each having scores that helps group songs that are similar together. For example, a high-energy pop song, which has high energy score and danceability, is ranked higher than a song that isn't. Therefore, if a users selects a song, the recommender will generate a score based on the song's similarity to a song the user has previously listened to. However, if it is the user's first time listening to the song, it will be used as a baseline for other songs in same genre that have the same and/or similar characteristics
 
 ---
 
@@ -432,6 +434,7 @@ Some prompts:
 - Does it treat all users as if they have the same taste shape
 - Is it biased toward high energy or one genre by default
 - How could this be unfair if used in a real product
+
 - In general, I noticed that the recommender seems to favor, high-energy pop songs. Every iteration seems to give high-energy pop preference over other genre of music. The recommender assumes that the user always wants to listen to high-energy pop first. all experiments and iterations gave preference to high-energy pop over others. Since the number of songs is small, results produced favors high-energy pop. I think if the number of genre and songs was increased, the result obtained may become evenly spread out amongst each genre of music in the songs file.
 ---
 
@@ -445,6 +448,7 @@ Examples:
 - You wrote tests for your scoring logic
 
 You do not need a numeric metric, but if you used one, explain what it measures.
+
 - In experimenting, I changed the genre score and mood to note any difference in each user profile. However, the changes did not produce any significant difference, for it favored one genre, high-energy pop, over others. This means that this recommender is heavily skewed to one form of genre, high-energy pop. 
 
 ---
@@ -458,6 +462,7 @@ Examples:
 - Add support for multiple users and "group vibe" recommendations
 - Balance diversity of songs instead of always picking the closest match
 - Use more features, like tempo ranges or lyric themes
+
 - In the future, I'd like to use real songs to test how it would perform as compared to auto-generated songs. In addition, I will increase the number and variety of songs used in the project. This allows testing to note if there's any significant difference from the original classification of a song to the result obtained when the recommender is used. 
 ---
 
@@ -468,4 +473,5 @@ A few sentences about what you learned:
 - What surprised you about how your system behaved
 - How did building this change how you think about real music recommenders
 - Where do you think human judgment still matters, even if the model seems "smart"
+
 - One of the most important lesson learned from this project is that recommender systems, such as Spotify, YouTube, and Pandora, are very complicated. Such platforms analyze lots of datapoints to be able to recommend potential songs/ videos that may be of interest as well as suggest songs/videos the user maybe interested in. In addition, I think the human factor is still important to allow the recommender system to function properly. If a users seems to be interested in a particular kind of song and/or topic doesn't mean that the user(human) can't listen to or watch videos that the user may not have previously considered. I think recommender systems in general still needs 'human element' to function effectively.
