@@ -290,6 +290,40 @@ or flag that recommendations are essentially blind guesses in this scenario.
 ![Deep Intense Rock](expB-dir1.png)
 ![Deep Intense Rock](expB-dir2.png)
 
+
+## Sample CLI Output
+
+![](src\docs\CLI_output.png)
+
+---
+
+## Profile Test Screenshots
+
+### High-Energy Pop
+| Baseline | Experiment A | Experiment B |
+|---|---|---|
+| ![](src\docs\baseline_hep.png) | ![](src\docs\expA-hep1.png) | ![](src\docs\expB-hep2.png) |
+
+### Chill Lofi
+| Baseline | Experiment A | Experiment B |
+|---|---|---|
+| ![](docs/clfi.png) | ![](docs/expA_clfi.png) | ![](docs/expB-clfi.png) |
+
+### Deep Intense Rock
+| Baseline | Experiment A | Experiment B |
+|---|---|---|
+| ![](docs/dir.png) | ![](docs/expA_dir.png) | ![](docs/expB-dir.png) |
+
+### Edge Case: High Energy + Melancholic Mood
+| Result |
+|---|
+| ![](docs/hemm.png) |
+
+### Edge Case: Conflicting Acoustic + Electronic
+| Result |
+|---|
+| ![](docs/caeg.png) |
+
 ## Getting Started
 
 ### Setup
@@ -487,31 +521,6 @@ Challenge 4: Visual Summary Table
 Improve the readability of your terminal output by providing a formatted table or summary.
 Ask Copilot to suggest a way to use a library like tabulate or simple ASCII formatting to display your top recommendations. Ensure your prompt specifies that the table must include the "reasons" for each score.
 
-## Results 
-![Results](docs/challenge_res.png)
-
-![Results](image-3.png)
-![Results](image-4.png)
-![Results](image-5.png)
-![Results](image-6.png)
-![Results](image-7.png)
-![Results](image-8.png)
-![Results](image-9.png)
-![Results](image-10.png)
-![Results](image-11.png)
-![Results](image-12.png)
-![Results](image-13.png)
-![Results](image-14.png)
-![Results](image-15.png)
-![Results](image-16.png)
-![Results](image-17.png)
-![Results](image-18.png)
-![Results](image-19.png)
-![Results](image-20.png)
-![Results](image-21.png)
-![Results](image-22.png)
-![Results](image-23.png)
-![Results](image-24.png)
-![Results](image-25.png)
-![Results](image-26.png)
-![Results](image-27.png)
+## Sample Results 
+![Challenge Result](challenge_expA.png)
+![Challenge Result](challenge_expB.png)
