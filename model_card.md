@@ -37,6 +37,12 @@
 ## 9. Personal Reflection    
 - One of the most important lesson learned from this project is that recommender systems, such as Spotify, YouTube, and Pandora, are very complicated. Such platforms analyze lots of datapoints to be able to recommend potential songs/ videos that may be of interest as well as suggest songs/videos the user maybe interested in. In addition, I think the human factor is still important to allow the recommender system to function properly. If a users seems to be interested in a particular kind of song and/or topic doesn't mean that the user(human) can't listen to or watch videos that the user may not have previously considered. I think recommender systems in general still needs 'human element' to function effectively.
 
+## Sample Challenge Results 
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+
 *** The answer below is AI-generated. It provides a much detailed assessment of the project
 # Model Card — MusicMatch 1.0
 
