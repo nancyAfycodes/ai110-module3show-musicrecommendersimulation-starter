@@ -12,14 +12,11 @@ Run from the project root with:
     python -m src.main
 """
 
-"""
-Command line runner for the Music Recommender Simulation.
-
-Run from the project root with:
-    python -m src.main
-"""
-
+import os
 from recommender import load_songs, recommend_songs
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SONGS_PATH = os.path.join(BASE_DIR, "data", "songs.csv")
 
 
 # --- Experiment modes ---
@@ -204,7 +201,7 @@ def run_profile(songs: list, profile: dict, experiment: dict) -> None:
 
 def main() -> None:
     """Loads songs and runs all profiles under each experiment mode."""
-    songs = load_songs("../data/songs.csv")
+    songs = load_songs(SONGS_PATH)
     print(f"\n  Loaded {len(songs)} songs from catalog.")
 
     for experiment in EXPERIMENTS:
