@@ -107,11 +107,68 @@ def score_song(
     return round(score, 3), reasons
 
 
+def apply_diversity_penalty(
+    scored: List[Tuple[Dict, float, str]],
+    artist_penalty: float = 0.5,
+    genre_penalty: float = 0.3,
+    max_per_artist: int = 1,
+    max_per_genre: int = 2,
+) -> List[Tuple[Dict, float, str]]:
+    """
+    Re-ranks a scored song list to enforce artist and genre diversity.
+
+    Rules:
+      - If an artist already appears max_per_artist times in selected results,
+        deduct artist_penalty from that song's score.
+      - If a genre already appears max_per_genre times in selected results,
+        deduct genre_penalty from that song's score.
+
+    Args:
+        scored:          pre-sorted list of (song, score, explanation) tuples
+        artist_penalty:  score deduction per duplicate artist (default 0.5)
+        genre_penalty:   score deduction per duplicate genre (default 0.3)
+        max_per_artist:  allowed appearances per artist before penalty (default 1)
+        max_per_genre:   allowed appearances per genre before penalty (default 2)
+
+    Returns:
+        re-ranked list with diversity penalties applied and noted in explanation
+    """
+    selected = []
+    artist_counts: Dict[str, int] = {}
+    genre_counts: Dict[str, int] = {}
+
+    for song, score, explanation in scored:
+        artist = song["artist"]
+        genre  = song["genre"]
+        penalty = 0.0
+        penalty_notes = []
+
+        if artist_counts.get(artist, 0) >= max_per_artist:
+            penalty += artist_penalty
+            penalty_notes.append(f"artist diversity penalty (-{artist_penalty}): {artist} already recommended")
+
+        if genre_counts.get(genre, 0) >= max_per_genre:
+            penalty += genre_penalty
+            penalty_notes.append(f"genre diversity penalty (-{genre_penalty}): {genre} already at limit")
+
+        adjusted_score = round(score - penalty, 3)
+        if penalty_notes:
+            explanation = explanation + " | " + " | ".join(penalty_notes)
+
+        selected.append((song, adjusted_score, explanation))
+        artist_counts[artist] = artist_counts.get(artist, 0) + 1
+        genre_counts[genre]   = genre_counts.get(genre, 0) + 1
+
+    selected.sort(key=lambda x: x[1], reverse=True)
+    return selected
+
+
 def recommend_songs(
     user_prefs: Dict,
     songs: List[Dict],
     k: int = 5,
     experiment: Optional[str] = None,
+    diversity: bool = False,
 ) -> List[Tuple[Dict, float, str]]:
     """
     Functional implementation of the recommendation logic.
@@ -122,6 +179,7 @@ def recommend_songs(
         songs:      full song catalog as list of dicts
         k:          number of top results to return
         experiment: optional experiment mode passed through to score_song
+        diversity:  if True, applies diversity penalty to avoid artist/genre repetition
 
     Returns top k as: (song_dict, score, explanation)
     """
@@ -136,6 +194,10 @@ def recommend_songs(
         scored.append((song, total, explanation))
 
     scored.sort(key=lambda x: x[1], reverse=True)
+
+    if diversity:
+        scored = apply_diversity_penalty(scored)
+
     return scored[:k]
 
 
