@@ -18,9 +18,10 @@ from recommender import load_songs, recommend_songs
 # --- Experiment modes ---
 
 EXPERIMENTS = [
-    {"mode": None,           "label": "Baseline"},
-    {"mode": "weight_shift", "label": "Experiment A: Weight Shift (energy x2, genre halved)"},
-    {"mode": "no_mood",      "label": "Experiment B: No Mood Matching"},
+    {"mode": None, "label": "Baseline",                  "diversity": False},
+    {"mode": None, "label": "Diversity Penalty Enabled",  "diversity": True},
+    {"mode": "weight_shift", "label": "Experiment A: Weight Shift (energy x2, genre halved)", "diversity": False},
+    {"mode": "no_mood",      "label": "Experiment B: No Mood Matching",                       "diversity": False},
 ]
 
 
@@ -128,11 +129,12 @@ def run_profile(songs: list, profile: dict, experiment: dict) -> None:
     """Runs the recommender for a single profile under a given experiment mode."""
     name  = profile["name"]
     prefs = profile["prefs"]
-    mode  = experiment["mode"]
-    label = experiment["label"]
+    mode      = experiment["mode"]
+    label     = experiment["label"]
+    diversity = experiment["diversity"]
 
     print_profile(f"{name}  [{label}]", prefs)
-    recommendations = recommend_songs(prefs, songs, 5, mode)
+    recommendations = recommend_songs(prefs, songs, 5, mode, diversity)
 
     print_header(f"Top 5  |  {name}  |  {label}")
     for rank, (song, score, explanation) in enumerate(recommendations, start=1):
