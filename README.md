@@ -331,7 +331,7 @@ Use this section to document the experiments you ran. For example:
 - What happened when you changed the weight on genre from 2.0 to 0.5
 - What happened when you added tempo or valence to the score
 - How did your system behave for different types of users
-
+- In this model, two experiments were tested, weight shift and mood matching. For the experiment involving weight shift, genre and energy was reduced to 1.0 and 0.8 respectively. This was done so that songs with near energy match can climb in rankings even though it's not from a genre the user prefers. In the experimenting with mood, removing mood means that song rankings that matched a particular mood was decreased whilst songs with better audio feature scores, but the wrong mood will increase. For example, the Chill Lofi profile, Focus Flow (focused, not chill) may now outscore Library Rain (chill) since mood was the only thing separating them.
 ---
 
 ## Limitations and Risks
@@ -345,6 +345,7 @@ Examples:
 - It might over favor one genre or mood
 
 You will go deeper on this in your model card.
+- The main limitation is the number of songs and type of songs generated. Since the songs were auto-generated, the variety of songs was based off of the songs already present in songs.csv folder. Consequently, AI (Claude) matched the songs generated accordingly. Furthermore, the total number of songs used in the project is small; total number of songs is 20. Therefore, not all genre of music was analyzed for the project. 
 
 ---
 
@@ -408,7 +409,7 @@ Describe your dataset.
 - Did you add or remove any songs
 - What kinds of genres or moods are represented
 - Whose taste does this data mostly reflect
-
+- The total number of songs in songs.csv file is 20. I added additional 10 songs to the songs already present in the file. The genre represented in the data set include high-energy pop, and deep intense rock, which is what is represented in the song choice used in the project. 
 ---
 
 ## 5. Strengths
@@ -419,7 +420,7 @@ You can think about:
 - Situations where the top results "felt right"
 - Particular user profiles it served well
 - Simplicity or transparency benefits
-
+- The recommender was great in recommending songs based on the user preference. For instance, high-energy pop songs, seems to be popular with the user. Since the songs used in the project are small, it means that the same can be applied to real-world situations. Consequently, expanding the genre explored in the project can assist in creating a more accurate user profile that can be tailored to each user. 
 ---
 
 ## 6. Limitations and Bias
@@ -431,7 +432,7 @@ Some prompts:
 - Does it treat all users as if they have the same taste shape
 - Is it biased toward high energy or one genre by default
 - How could this be unfair if used in a real product
-
+- In general, I noticed that the recommender seems to favor, high-energy pop songs. Every iteration seems to give high-energy pop preference over other genre of music. The recommender assumes that the user always wants to listen to high-energy pop first. all experiments and iterations gave preference to high-energy pop over others. Since the number of songs is small, results produced favors high-energy pop. I think if the number of genre and songs was increased, the result obtained may become evenly spread out amongst each genre of music in the songs file.
 ---
 
 ## 7. Evaluation
@@ -444,6 +445,7 @@ Examples:
 - You wrote tests for your scoring logic
 
 You do not need a numeric metric, but if you used one, explain what it measures.
+- In experimenting, I changed the genre score and mood to note any difference in each user profile. However, the changes did not produce any significant difference, for it favored one genre, high-energy pop, over others. This means that this recommender is heavily skewed to one form of genre, high-energy pop. 
 
 ---
 
@@ -456,7 +458,7 @@ Examples:
 - Add support for multiple users and "group vibe" recommendations
 - Balance diversity of songs instead of always picking the closest match
 - Use more features, like tempo ranges or lyric themes
-
+- In the future, I'd like to use real songs to test how it would perform as compared to auto-generated songs. In addition, I will increase the number and variety of songs used in the project. This allows testing to note if there's any significant difference from the original classification of a song to the result obtained when the recommender is used. 
 ---
 
 ## 9. Personal Reflection
@@ -466,4 +468,4 @@ A few sentences about what you learned:
 - What surprised you about how your system behaved
 - How did building this change how you think about real music recommenders
 - Where do you think human judgment still matters, even if the model seems "smart"
-
+- One of the most important lesson learned from this project is that recommender systems, such as Spotify, YouTube, and Pandora, are very complicated. Such platforms analyze lots of datapoints to be able to recommend potential songs/ videos that may be of interest as well as suggest songs/videos the user maybe interested in. In addition, I think the human factor is still important to allow the recommender system to function properly. If a users seems to be interested in a particular kind of song and/or topic doesn't mean that the user(human) can't listen to or watch videos that the user may not have previously considered. I think recommender systems in general still needs 'human element' to function effectively.
